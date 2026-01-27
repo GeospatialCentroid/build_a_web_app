@@ -1,0 +1,280 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Intro to HTML &amp; CSS</title>
+        <link rel="stylesheet" href="style/style.css">
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <h2>Workshop</h2>
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#overview">Overview</a>
+                        </li>
+                        <li>
+                            <a href="#software_setup">Software Setup</a>
+                        </li>
+                        <li>
+                            <a href="#website_setup">Website Setup</a>
+                        </li>
+                        <li>
+                            <a href="#html_basics">HTML Basics</a>
+                        </li>
+                        <li>
+                            <a href="#exercise_1">Mini Exercise 1</a>
+                        </li>
+                        <li>
+                            <a href="#css">CSS Basics</a>
+                        </li>
+                        <li>
+                            <a href="#exercise_2">Mini Exercise 2</a>
+                        </li>
+                        <li>
+                            <a href="#layout">Layout &amp; Accessibility</a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+            <main class="content">
+                <header>
+                    <h1>Web Foundations</h1>
+                    <p class="subtitle">A 2-hour practical introduction to HTML &amp; CSS</p>
+                </header>
+                <section id="overview">
+                    <h2>Overview</h2>
+                    <p>
+                        This workshop is designed for those who want to better understand how the web works and how to present information online.
+                    </p>
+                    <p>No prior coding experience is required.</p>
+                    <ul>
+                        <li>
+                            <strong>Duration:</strong> 2 hours
+                        </li>
+                        <li>
+                            <strong>Outcome:</strong> A simple, styled webpage
+                        </li>
+                    </ul>
+                </section>
+                <section id="software_setup">
+                    <h2>Setup Using Visual Studio Code (VS Code) with WYSIWYG extension</h2>
+                    <h3>Steps:</h3>
+                    <ol>
+                        <li>Install VS Code (https://code.visualstudio.com/Download)</li>
+                        <li>Launch VS Code</li>
+                         <li>Click Extensions icon on left navigation pane</li>
+                         <li>Using the left search field, type "HTML WYSIWYG"</li>
+                         <li>Click to Install HTML WYSIWYG...</li>
+                    </ol>
+              
+                </section>
+                <section id="website_setup">
+                    <h2>Website Setup</h2>
+                    <h3>Steps:</h3>
+                    <ol>
+                        <li>Create a folder named "website" on your computer</li>
+                        <li>From with VS Code click File>Open Folder>[Navigate toe the "website" folder]</li>
+                         <li>Create a new file called "index.html" by clicking the "New File" icon next to the Explorer pane</li>
+                         <li>From within "index.html", type  "!" Then press Enter on your keyboard</li>
+                         <li>You should now have the skeleton of a web page</li>
+                         <li>Right-click the file in the Explorer pane and click "Open with Live Server" </li>
+                    </ol>
+              
+                </section>
+                <section id="html_basics">
+                    <h2>HTML Basics (Structure)</h2>
+                    <p>
+                        HTML provides the <strong>structure and meaning</strong> of your content. 
+                        HTML stands for Hyper Text Markup Language, and it's syntax consists of elements which have an opening tag, content, and a closing tag.
+                        Your web browser knows how to render many tags, and each tag can have zero or more attributes.
+                        Attributes are defined by the attribute name, followed by '=', and the value should be surrounded by quotes.
+                        <h3>Example element</h3>
+                        <pre><code id="code-container"></code></pre>
+                        <script>
+                            // The raw HTML code you want to display
+                            var  rawHTML = '<tag attribute="value">Content goes here</tag>';
+
+                            // Set the textContent property to display the code as text
+                            document.getElementById('code-container').textContent = rawHTML;
+                        </script>
+                    </p>
+                    <p>Looking at our index.html file, can you identify the tags? 
+                        Notice how they are nested. The basic tags and their purpose are:
+                        <ul>
+
+                        <li>&lt;html&gt; is the root, every of the tag resides within.</li>
+                         <li>&lt;head&gt; for the title, metadata, and indicating required files.</li>
+                         <li>&lt;body&gt; is for visual content.</li>
+                        </ul>       
+                    <p>Common visual elements include:</p>
+                    <ul>
+                        <li>Headings (H1, H2) for sections</li>
+                        <li>Paragraphs (p) for text content</li>
+                        <li>Links (a) to other webpages or websites</li>
+                        <li>Lists (ul, ol) for organizing content</li>
+                        <li>Images (img) </li>
+                    </ul>
+                    For a complete list of common elements and their usage, visit <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Cheatsheet">
+                    HTML cheatsheet for syntax and common tasks</a>. 
+                </section>
+                <section id="exercise_1">
+                    <h2>Mini Exercise (5–7 min)</h2>
+                    <p>Within the index.html file you created, add the following:</p>
+                    <ul>
+                        <li>Your name</li>
+                        <li>A short bio paragraph</li>
+                        <li>Link to your favorite website</li>
+                    </ul>
+                    When you're done, save the file and test it in your web browse.
+                </section>
+                <section id="css">
+                    <h2>CSS Basics</h2>
+                    <p>CSS controls how your content appears.
+                        CSS stands for Cascading Style Sheet, and allows you to apply styles inline or
+                        store styles in an external file, commonly at <i>style>style.css</i>
+                    </p>
+                    <p>CSS is kept in a separate file to support reuse and consistency across projects.
+                        Below is an exmaple style applied to the "body" tag
+                    </p>
+                    <pre>
+                        <code>
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #f8fafc;
+    color: #1f2933;
+}  
+                        </code>
+                    </pre>
+                    CSS can be applied to tags, classes, and ids, here's how to target these:
+                    <ul>
+                        <li>tag - simply use the name. e.g body</li>
+                        <li>class - place a '.' before the class name, e.g. '.my_class'</li>
+                        <li>id - place a '#' before the id, e.g '#my_id"</li>
+                    </ul>
+                    The syntax for adding both a class and id:
+                    <pre><code id="code-container1"></code></pre>
+                        <script>
+                            // The raw HTML code you want to display
+                            var rawHTML = '<div id="my_id" class="my_class">Content goes here</div>';
+
+                            // Set the textContent property to display the code as text
+                            document.getElementById('code-container1').textContent = rawHTML;
+                        </script>
+
+                    To load the style.css file within your webpage use:
+                    <pre><code id="code-container2"></code></pre>
+                        <script>
+                            // The raw HTML code you want to display
+                            var rawHTML = '<link rel="stylesheet" href="style/style.css">';
+
+                            // Set the textContent property to display the code as text
+                            document.getElementById('code-container2').textContent = rawHTML;
+                        </script>
+                        Visit <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference">
+                    CSS reference</a> for a comprehensive listing of CSS properties. 
+                </section>
+                <section id="exercise_2">
+                    <h2>Mini Exercise (5–7 min)</h2>
+                    <p>Create a style.css file and load it into your webpage. Within your .css, file do the following:</p>
+                    <ul>
+                        <li>Change the background color of the body tag</li>
+                        <li>Change the text color of a class tag</li>
+                         <li>Make an ID bold</li>
+                    </ul>
+                    When you're done, save the file and test it in your web browse.
+                </section>
+                <section id="layout">
+                    <h2>Layout &amp; Accessibility</h2>
+                    <p>Readable layouts are critical for communicating research clearly. 
+                        Reconginizing that many people will view your website on their mobile phones, 
+                        has driven a mobile first design methodology. 
+                        The following HTML and CSS provide an 
+                        example of how to layout your content to accomodate both mobile and desktop visitors to your website.</p>
+                    
+                     <pre><code id="code-container3"></code></pre>
+                        <script>
+                            // The raw HTML code you want to display
+                            var rawHTML = `  
+<header>
+    <h1></h1>
+    <p></p>
+</header>
+
+<main class="layout">
+    <section id="map-container">
+    <h2></h2>
+    <div id="map"></div>
+    </section>
+
+    <section id="chart-container">
+    <h2></h2>
+    <div id="chart">
+    </div>
+    </section>
+</main>`;
+
+                            // Set the textContent property to display the code as text
+                            document.getElementById('code-container3').textContent = rawHTML;
+                        </script>
+
+
+                        <pre><code id="code-container4"></code></pre>
+                        <script>
+                            // The raw HTML code you want to display
+                            var rawHTML = `  
+
+header {
+  padding: 1rem 1.5rem;
+  background: #2f4f4f;
+  color: white;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Two-column layout on larger screens */
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 1.2fr 1fr;
+    height: calc(100vh - 110px);
+  }
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+}
+
+section h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}`;
+
+                            // Set the textContent property to display the code as text
+                            document.getElementById('code-container4').textContent = rawHTML;
+                        </script>
+                    <p>
+                        The accessibility of web-based content is important and legally enforced. 
+                        Adhering to the <a href="https://www.w3.org/TR/WCAG21/">Web Content Accessibility Guidelines (WCAG) 2.1</a> is required. 
+                        Using a <a href="https://www.w3.org/WAI/test-evaluate/tools/list/">Web Accessibility Checker</a> will help you make sure you haven't missed anything.                         
+                        
+                    </p>
+
+                    <p>The Web Accessibility Checker should also check for color contrast, but it's a good idea to check your color choices earlier on with the <a href="https://webaim.org/resources/contrastchecker/">Contrast Checker</a>.</p>
+                </section>
+                
+                <footer>
+                        <a href="javascript.html">Next Section</a>                        
+                        
+                </footer>
+            </main>
+        </div>
+    </body>
+</html>
