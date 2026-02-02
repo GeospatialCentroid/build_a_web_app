@@ -24,8 +24,11 @@
                             <a href="#html_basics">HTML Basics</a>
                         </li>
                         <li>
-                            <a href="#exercise_1">Mini Exercise 1</a>
+                            <a href="#images">Images</a>
                         </li>
+                        <li>
+                            <a href="#exercise_1">Mini Exercise 1</a>
+                        </li> 
                         <li>
                             <a href="#css">CSS Basics</a>
                         </li>
@@ -118,6 +121,26 @@
                     </ul>
                     For a complete list of common elements and their usage, visit <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Cheatsheet">
                     HTML cheatsheet for syntax and common tasks</a>. 
+                </section>
+                <section id="images">
+                    <h2>Displaying Images</h2>
+                    <p>To add an image to your webpage do the following:</p>
+                    <ol>
+                        <li>Create an "images" folder</li>
+                        <li>Paste the image you'd like to add to your webpage into the folder</li>
+                        <li>Add an image element to your index.html and set the 'src' to the image path</li>
+                    </ol>
+                    <pre><code id="code-container0"></code></pre>
+                     <script>
+                            // The raw HTML code you want to display
+                            var rawHTML = '<img src="images/me.png" width="50" />';
+
+                            // Set the textContent property to display the code as text
+                            document.getElementById('code-container0').textContent = rawHTML;
+                        </script>
+                    <p>Note: We are using a <i>relative</i> path to our image. 
+                        If you want to show an image from another webpage 
+                        you'd use an <i>absolute</i> path (e.g. one that included https://...)</p>
                 </section>
                 <section id="exercise_1">
                     <h2>Mini Exercise (5–7 min)</h2>
