@@ -21,6 +21,8 @@
 </li>
 <li><a href="#dom">DOM & Interactivity</a></li>
 <li><a href="#events">Events</a></li>
+<li><a href="#forms">Forms</a></li>
+<li><a href="#element_loop">Element Loop</a></li>
 
 </ul>
 </nav>
@@ -428,13 +430,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <section id="events">
         <h2>Events & User Interaction</h2>
-        <p>Events allow your page to respond to user actions such as clicks or typing.</p>
-
+        <p>Events allow your page to respond to user actions such as clicks or typing.
+          The following example shows how to show/hide an element:
+        </p>
+<h3>HTML</h3>
         <pre><code>&lt;button id="toggle"&gt;Show Abstract&lt;/button&gt;
 &lt;p id="abstract" hidden&gt;
   This project examines...
 &lt;/p&gt;</code></pre>
-
+<h3>JavaScript</h3>
         <pre><code>const button = document.querySelector("#toggle");
 const abstract = document.querySelector("#abstract");
 
@@ -444,39 +448,52 @@ button.addEventListener("click", () => {
 
       </section>
 
-      <section id="highlight_active">
-        <h2>Highlighting and Active Selection</h2>
-        <p>Adding and removing CSS classes can help draw attention to elements</p>
+    <section id="forms">
+        <h2>Forms</h2>
+        <p>Accepting user input is often handled using a form element. 
+          The following example shows how to create a simple calculator using html and javascript.</p>
+<h3>HTML</h3>
+<pre><code id="code-container0"></code></pre>
+        <script>
+            // The raw HTML code you want to display
+            var  rawHTML = `
+<form onsubmit="calculate(event)">
+  <label for="equation">Enter an equation:</label><br>
+  <input type="text" id="equation" placeholder="e.g. 2 + 3 * 4">
+  <button type="submit">Calculate</button>
+</form>
 
-        <p>The following listens to the scrolling event and highlights the section that has been scrolled into view</p>
-        <h3>CSS</h3>
+  <p><strong>Result:</strong> <span id="result"></span></p>
+  `;
+
+            // Set the textContent property to display the code as text
+            document.getElementById('code-container0').textContent = rawHTML;
+        </script>
+<h3>JavaScript</h3>
         <pre><code>
-section.active {
-  border-left: 4px solid #2563eb;
-  padding-left: 1rem;
-  background-color: #f1f5f9;
-}
-        </code></pre>
-        <h3>JavaScript</h3>
-        <pre><code>const sections = document.querySelectorAll("section");
+function calculate(event) {
+      event.preventDefault(); // stop form from refreshing page
 
-function highlightSection() {
-  sections.forEach(section => {
-    const rect = section.getBoundingClientRect();
+      const equation = document.getElementById("equation").value;
+      const resultEl = document.getElementById("result");
 
-    if (rect.top >= 0 && rect.top < 200) {
-      section.classList.add("active");
-    } else {
-      section.classList.remove("active");
-    }
-  });
-}
+      // Note: eval() is dangerous in real apps.
+      // Expressions should be sanitized before processing to prevent injecting Javascript.
+      try {
+        const answer = eval(equation);
+        resultEl.textContent = answer;
+      } catch (error) {
+        resultEl.textContent = "Invalid expression";
+      }
+    }</code></pre>
 
-window.addEventListener("scroll", highlightSection);</code></pre>
+      </section>
 
-
-         <h3>Looping through DOM elements</h3>
-       
+      <section id="element_loop">
+    
+         <h2>Looping through DOM elements</h2>
+       <p>It may be beneficial to loop through all the elements on your webpage. 
+       Here's how you can accomplish this:</p>
         <pre><code>
             const buttons = document.querySelectorAll("button");
 
@@ -487,7 +504,7 @@ window.addEventListener("scroll", highlightSection);</code></pre>
 });
         </code></pre>
 
-
+        More information on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll">querySelectorAll</a>
       </section>
 
       <footer>
