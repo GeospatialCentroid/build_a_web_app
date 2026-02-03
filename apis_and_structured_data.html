@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Working with APIs & Structured Data (JavaScript)</title>
+  <link rel="stylesheet" href="style/style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2>Workshop</h2>
+      <nav>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#apis">What Are APIs?</a></li>
+          <li><a href="#formats">Data Formats</a></li>
+          <li><a href="#nws">NWS API</a></li>
+          <li><a href="#geolocation">Using Location</a></li>
+          <li><a href="#fetch">Fetching Data</a></li>
+          <li><a href="#then">Then What</a></li>
+          <li><a href="#loop">Looping & Tables</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header>
+        <h1>Working with APIs & Structured Data</h1>
+        <p class="subtitle">A 2-hour practical workshop for researchers using JavaScript to work with data</p>
+      </header>
+
+      <section id="overview">
+        <h2>Overview</h2>
+        <p>This workshop introduces <strong>Application Programming Interfaces (APIs)</strong> and structured data formats commonly used in research and public data portals.</p>
+        <p>Participants will learn how to request data from an API, interpret structured responses, and display results in a clean, readable format using JavaScript.</p>
+
+        <ul>
+          <li><strong>Duration:</strong> 2 hours</li>
+          <li><strong>Outcome:</strong> A webpage that automatically loads and displays weather forecast data</li>
+        </ul>
+      </section>
+
+      <section id="apis">
+        <h2>What Are APIs?</h2>
+        <p>An API is a structured way for software systems to share data. For researchers, APIs provide <strong>programmatic access</strong> to datasets that are frequently updated or too large to download manually.</p>
+
+        <p>Common research uses of APIs include:</p>
+        <ul>
+          <li>Accessing public datasets (environmental data, census, etc.)</li>
+          <li>Automating data collection</li>
+          <li>Ensuring reproducibility</li>
+          <li>Building interactive research outputs</li>
+        </ul>
+      </section>
+
+      <section id="formats">
+        <h2>Common Structured Data Formats</h2>
+
+        <h3>JSON</h3>
+        <p>JavaScript Object Notation. Human-readable, widely used, and native to JavaScript.</p>
+
+        <h3>GeoJSON</h3>
+        <p>A geographic extension of JSON for spatial data (points, lines, polygons).</p>
+
+        <h3>CSV</h3>
+        <p>Comma-Separated Values. Common for spreadsheets and tabular research data.</p>
+
+        <h3>XML</h3>
+        <p>Extensible Markup Language. Older but still used in many scholarly systems.</p>
+
+        <p>In this workshop, we focus on <strong>JSON</strong> and <strong>GeoJSON</strong> because they work naturally with JavaScript.</p>
+      </section>
+
+      <section id="nws">
+        <h2>The National Weather Service (NWS) API</h2>
+        <p>The NWS provides a free, public API that returns weather forecasts in JSON format.</p>
+
+        <p>A typical request looks like this:</p>
+
+        <pre><code>https://api.weather.gov/points/39.7456,-97.0892</code></pre>
+
+        <p>This endpoint returns metadata, including a link to the forecast for that location. 
+          See the <a href="https://www.weather.gov/documentation/services-web-api">NWS API Web Service</a> page for details.</p>
+      </section>
+
+      <section id="geolocation">
+        <h2>Using the Visitor’s Location</h2>
+        <p>Instead of hard-coding latitude and longitude, we can use the browser’s <code>navigator.geolocation</code> API.</p>
+
+        <pre><code>navigator.geolocation.getCurrentPosition(position =&gt; {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
+});</code></pre>
+
+        <p>These coordinates can then be used to replace <code>39.7456,-97.0892</code> dynamically.</p>
+      </section>
+
+      <section id="fetch">
+        <h2>Fetching Data with JavaScript</h2>
+        <p>JavaScript uses the <code>fetch()</code> function to request data from an API.</p>
+
+        <pre><code>
+async function get_weather_forcast(lat, lon) {
+  const pointsRes = await fetch(`https://api.weather.gov/points/${lat},${lon}`);
+  const pointsData = await pointsRes.json();
+
+  const forecastRes = await fetch(pointsData.properties.forecast);
+  return await forecastRes.json();
+}
+        </code></pre>
+
+        <p><code>fetch()</code> returns a <b>Promise</b>, not the data, 
+          and is often used with the following to complete the request:</p>
+                    <ol>
+                        <li><code>async</code> allows operations to run without blocking the main program thread, ensuring the application remains responsive</li>
+                        <li><code>await</code> used to pause the execution of an async function until a Promise is settled (fulfilled or rejected)</li>
+                    </ol>
+
+        <p>This chained request pattern is common when working with linked APIs.</p>
+      </section>
+      <section id="then">
+        <h2>Then What</h2>
+        <p><code>.then()</code> is a method used with Promises to handle the results of asynchronous operations.
+        The updated <code>geolocation</code> below shows how to work with .then()</p>
+
+        <pre><code>
+
+navigator.geolocation.getCurrentPosition(position => {
+  let lat = position.coords.latitude;
+  let lon = position.coords.longitude;
+
+  get_weather_forcast(lat,lon)
+    .then(data => {
+    update_forcast(data);
+    }              
+  )
+});
+        </code></pre>
+
+      </section>
+      <section id="loop">
+        <h2>Looping Over Forecast Data</h2>
+        <p>The forecast response includes an array of time periods. We can loop over this data and build a table.</p>
+
+        <pre><code>forecastData.properties.periods.forEach(period =&gt; {
+  console.log(period.name, period.temperature, period.shortForecast);
+});</code></pre>
+
+        <h3>Displaying Data in a Table</h3>
+
+        <pre><code>&lt;table id="forecast"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Period&lt;/th&gt;
+      &lt;th&gt;Temperature&lt;/th&gt;
+      &lt;th&gt;Forecast&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;&lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+
+        <pre><code>const tbody = document.querySelector('#forecast tbody');
+
+forecastData.properties.periods.forEach(period =&gt; {
+  const row = document.createElement('tr');
+
+  row.innerHTML = `
+    &lt;td&gt;${period.name}&lt;/td&gt;
+    &lt;td&gt;${period.temperature}°F&lt;/td&gt;
+    &lt;td&gt;${period.shortForecast}&lt;/td&gt;
+  `;
+
+  tbody.appendChild(row);
+});</code></pre>
+
+        <p>This approach cleanly separates <strong>data retrieval</strong> from <strong>presentation</strong>.</p>
+      <p>
+        To make this table much more visually appealing, the following CSS can be used:
+      </p>
+      
+       <pre><code>
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+thead {
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+thead th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+tbody tr:hover {
+  background-color: #eef2ff;
+}
+
+td {
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+}
+
+       </code></pre>
+      
+      </section>
+
+      
+
+      <footer>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
