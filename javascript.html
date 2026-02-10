@@ -40,9 +40,8 @@
 
 <section id="overview">
 <h2>Overview</h2>
-<p>This workshop introduces <strong>JavaScript</strong> as the programming layer of the web. It is designed for <strong>researchers, librarians, and research staff</strong> who already have basic familiarity with HTML and CSS and want to add <em>interactivity</em> to research pages.</p>
-
-
+<p>This workshop introduces <strong>JavaScript</strong> as the programming layer of the web. 
+  You should already have basic familiarity with HTML and CSS prior to proceeding.</p>
 <ul>
 <li><strong>Duration:</strong> 2 hours</li>
 <li><strong>Prerequisites:</strong> Basic HTML & CSS</li>
@@ -64,15 +63,9 @@
 </li>
 </ul>
 <p>
- To load this index.js file within your webpage use: 
-<pre><code id="code-container"></code></pre>
-        <script>
-            // The raw HTML code you want to display
-            var  rawHTML = '<script src="js/index.js">< /script>';
-
-            // Set the textContent property to display the code as text
-            document.getElementById('code-container').textContent = rawHTML;
-        </script>
+ To load this index.js file within your webpage add the following line to the <i>&lt;head&gt;</i> element of your HTML file: 
+<pre><code id="code-container">&lt;script src="js/index.js">&lt;/script></code></pre>
+        
 </p>
 </section>
 
@@ -115,7 +108,7 @@ In Chrome - click View>Developer>Developer Tools, then select <b>Console</b>.</p
           <li>Not be a reserved keyword</li>
         </ul>
 
-    <p>JavaScript is case-sensitive. So variables named 'age' and 'Age' are different. Best to keep varaibles</p>
+    <p>JavaScript is case-sensitive. So variables named 'age' and 'Age' are different. Best to keep variables in consistent case (e.g., camelCase).</p>
      <h4>Variable Types</h4>
          <h5>String</h5>
         <pre><code>
@@ -146,7 +139,7 @@ const user = {
   role: "Researcher"
 };
 
-//to get the 'name' key two ways
+//to get the 'name' key (two ways)
 console.log(user.name, user['name'])
         </code></pre>
 
@@ -183,7 +176,8 @@ function greetUser(name) {
   return "Welcome, " + name;
 }</code></pre>
 
- <pre><code>// As an arrow function
+ <pre><code>// As an arrow function 
+// structure: const functionName = (parameters) => { function body };
 const greetUser = (name) => {
   return "Welcome, " + name;
 };</code></pre>
@@ -193,8 +187,7 @@ const greetUser = name => "Welcome, " + name;</code></pre>
 
         <h3>Conditionals</h3>
         <h4>if</h4>
-        <pre><code>
-const temperature = 85;
+        <pre><code>const temperature = 85;
 
 if (temperature > 80) {
   console.log("It's hot outside");
@@ -202,8 +195,7 @@ if (temperature > 80) {
         </code></pre>
 
         <h4>if / else</h4>
-        <pre><code>
-const isLoggedIn = false;
+        <pre><code>const isLoggedIn = false;
 
 if (isLoggedIn) {
   console.log("Welcome back!");
@@ -213,8 +205,7 @@ if (isLoggedIn) {
         </code></pre>
 
         <h4>if / else if / else</h4>
-        <pre><code>
-const score = 72;
+        <pre><code>const score = 72;
 
 if (score >= 90) {
   console.log("Grade: A");
@@ -228,8 +219,7 @@ if (score >= 90) {
         </code></pre>
 
         <h4>Comparison operators in conditionals</h4>
-        <pre><code>
-5 === 5   // true (strict equality)
+        <pre><code>5 === 5   // true (strict equality)
 5 == "5"  // true (type coercion – usually avoid)
 5 !== 3   // true
 10 > 3    // true
@@ -237,8 +227,7 @@ if (score >= 90) {
 </code></pre>
 
         <h4>Logical operators (&&, ||, !)</h4>
-        <pre><code>
-const isAdmin = true;
+        <pre><code>const isAdmin = true;
 const isLoggedIn = true;
 
 if (isAdmin && isLoggedIn) {
@@ -254,7 +243,7 @@ if (hasTicket || isVIP) {
 
         </code></pre>
 
-        <h4>switch statement</h4>
+        <h4>Switch Statement</h4>
         Good when comparing one value against many options.
         <pre><code>
 const day = "Monday";
@@ -278,15 +267,13 @@ switch (day) {
 
         <h3>Loops</h3>
         <h4>for loop (classic)</h4>
-        <pre><code>
-for (let i = 0; i < 5; i++) {
+        <pre><code>for (let i = 0; i < 5; i++) {
     console.log(i);
 }
         </code></pre>
 
         <h4>Looping through an array with for</h4>
-        <pre><code>
-const colors = ["red", "green", "blue"];
+        <pre><code>const colors = ["red", "green", "blue"];
 
 for (let i = 0; i < colors.length; i++) {
   console.log(colors[i]);
@@ -295,8 +282,7 @@ for (let i = 0; i < colors.length; i++) {
 
         <h4>for...of (modern & clean)</h4>
         Best for looping over values in arrays and strings.
-        <pre><code>
-const fruits = ["apple", "banana", "orange"];
+        <pre><code>const fruits = ["apple", "banana", "orange"];
 
 for (const fruit of fruits) {
   console.log(fruit);
@@ -305,8 +291,7 @@ for (const fruit of fruits) {
 
         <h4>for...in (objects)</h4>
        
-        <pre><code>
-const user = {
+        <pre><code>const user = {
   name: "Kevin",
   role: "Researcher"
 };
@@ -318,8 +303,7 @@ for (const key in user) {
 
         <h4>while loop</h4>
         Runs while a condition is true.
-        <pre><code>
-let count = 0;
+        <pre><code>let count = 0;
 
 while (count < 3) {
   console.log(count);
@@ -329,8 +313,7 @@ while (count < 3) {
 
          <h4>do...while</h4>
        Runs at least once, even if the condition is false.
-        <pre><code>
-let num = 5;
+        <pre><code>let num = 5;
 do {
   console.log(num);
   num++;
@@ -339,8 +322,7 @@ do {
 
          <h4>break and continue</h4>
        
-        <pre><code>
-for (let i = 1; i <= 5; i++) {
+        <pre><code>for (let i = 1; i <= 5; i++) {
   if (i === 3) {
     continue; // skip 3
   }
@@ -354,8 +336,7 @@ for (let i = 1; i <= 5; i++) {
         </code></pre>
          <h4>Array methods (loops you’ll actually use a lot)</h4>
        <h5>Array methods (loops you’ll actually use a lot)</h5>
-        <pre><code>
-const numbers = [1, 2, 3];
+        <pre><code>const numbers = [1, 2, 3];
 
 numbers.forEach(num => {
   console.log(num * 2);
@@ -389,26 +370,21 @@ const total = data.reduce((sum, value) => sum + value, 0);
       </section>
 <section id="exercise_1">
                     <h2>Mini Exercise (5–7 min)</h2>
-                    <p>Write and test a function that converts fahrenheit to celsius</p>
+                    <p>Write and test a function called 'fToC' that converts fahrenheit to celsius</p>
                     
-                    <pre><code>
-
- //Step 1: create fahrenheit to celsius function noting that F = (C * 9/5) + 32
+                    <pre><code>//Step 1: create fahrenheit to celsius function noting celsius = (fahrenheit - 32) * 5 / 9
  
 // Step 2: test the function with different values to make sure it works as expected
  </code></pre>
 
- 
                     When you're done, save the file and test it in your web browser.
                 </section>
       <section id="dom">
         <h2>The DOM: Connecting JavaScript to HTML</h2>
         <p>The <strong>Document Object Model (DOM)</strong> allows JavaScript to read and change HTML.</p>
         <p>To make sure the HTML elements are present before the JavaScript runs, 
-            be sure to wait for the 'DOMContentLoaded' event to fire.</p>
-        <pre><code>
-// Select an element
-document.addEventListener('DOMContentLoaded', () => {
+            be sure to wait for the 'DOMContentLoaded' event to fire, see below</p>
+        <pre><code>document.addEventListener('DOMContentLoaded', () => {
     // Select an element
     const heading = document.querySelector("h1");
     console.log(heading)
@@ -418,13 +394,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });</code></pre>
 
         <p>Think of the DOM as a bridge between your HTML structure and JavaScript logic.</p>
-
-
       </section>
 
       <section id="events">
         <h2>Events & User Interaction</h2>
-        <p>Events allow your page to respond to user actions such as clicks or typing.
+        <p>Events allow your page to respond to user actions such as clicks or typing.>
           The following example shows how to show/hide an element:
         </p>
 <h3>HTML</h3>
@@ -479,7 +453,7 @@ buttons.forEach(button => {
       </section>
       <section id="tabs">
         <h2>Tabs</h2>
-        <p>Often time the web interface isn't large enough to show all the content at once. A common solution is to use tabs to show and hide different sections of content.
+        <p>Often times the web interface isn't large enough to show all the content at once. A common solution is to use tabs to show and hide different sections of content.
           The following example shows how to show/hide different content sections using JavaScript and CSS.</p>
 <h3>HTML</h3>
         <pre><code>
