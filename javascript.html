@@ -20,9 +20,11 @@
  <li> <a href="#exercise_1">Mini Exercise</a>
 </li>
 <li><a href="#dom">DOM & Interactivity</a></li>
+<li><a href="#exercise_2">Mini Exercise</a></li>
 <li><a href="#events">Events</a></li>
-<li><a href="#forms">Forms</a></li>
 <li><a href="#element_loop">Element Loop</a></li>
+<li><a href="#tabs">Tabs</a></li>
+
 
 </ul>
 </nav>
@@ -66,7 +68,7 @@
 <pre><code id="code-container"></code></pre>
         <script>
             // The raw HTML code you want to display
-            var  rawHTML = '<script src="js/script.js"/>';
+            var  rawHTML = '<script src="js/index.js">< /script>';
 
             // Set the textContent property to display the code as text
             document.getElementById('code-container').textContent = rawHTML;
@@ -95,7 +97,7 @@
         <h2>JavaScript Basics</h2>
         <p>JavaScript is a programming language that runs in the browser.</p>
         <h3>Variables</h3>
-         <p>Declare variables using let, const (for contants), or (older) var.</p>
+         <p>Declare variables using <i>let</i>, <i>const</i> (for contants), or (older) <i>var</i>.</p>
         <pre><code>// A simple variable
 let projectTitle = "Climate Data Explorer";
 
@@ -387,39 +389,31 @@ const total = data.reduce((sum, value) => sum + value, 0);
       </section>
 <section id="exercise_1">
                     <h2>Mini Exercise (5–7 min)</h2>
-                    <p>Using AQHI-style ranges below, create a function to determine appropriate message based the passed variable</p>
+                    <p>Write and test a function that converts fahrenheit to celsius</p>
                     
                     <pre><code>
 
-const aqhiRanges = [
-  { min: 1,  max: 3,  level: "Low",       message: "Enjoy outdoor activities." },
-  { min: 4,  max: 6,  level: "Moderate",  message: "Consider reducing prolonged outdoor exertion." },
-  { min: 7,  max: 10, level: "High",      message: "Reduce or reschedule outdoor activities." },
-  { min: 11, max: null, level: "Very High", message: "Avoid outdoor activities." }
-];
+ //Step 1: create fahrenheit to celsius function noting that F = (C * 9/5) + 32
+ 
+// Step 2: test the function with different values to make sure it works as expected
+ </code></pre>
 
- // Step 1: AQHI value
-
-
-// Step 2: function to return health message. Hint: try using a for...of loop
-
-
-// Step 3: call the function and log the result
-                    </code></pre>
-                    When you're done, save the file and test it in your web browse.
+ 
+                    When you're done, save the file and test it in your web browser.
                 </section>
       <section id="dom">
         <h2>The DOM: Connecting JavaScript to HTML</h2>
         <p>The <strong>Document Object Model (DOM)</strong> allows JavaScript to read and change HTML.</p>
         <p>To make sure the HTML elements are present before the JavaScript runs, 
             be sure to wait for the 'DOMContentLoaded' event to fire.</p>
-        <pre><code>// Select an element
+        <pre><code>
+// Select an element
 document.addEventListener('DOMContentLoaded', () => {
     // Select an element
     const heading = document.querySelector("h1");
     console.log(heading)
     // Change its text
-    heading.textContent = "Interactive Research Page";
+    heading.textContent = projectTitle;
 
 });</code></pre>
 
@@ -434,36 +428,108 @@ document.addEventListener('DOMContentLoaded', () => {
           The following example shows how to show/hide an element:
         </p>
 <h3>HTML</h3>
-        <pre><code>&lt;button id="toggle"&gt;Show Abstract&lt;/button&gt;
-&lt;p id="abstract" hidden&gt;
-  This project examines...
-&lt;/p&gt;</code></pre>
+        <pre><code>
+&lt;button class="tab-button active" data-tab="forcast_table">
+  Table
+&lt;/button>
+          
+&lt;div id="forcast_table" class="tab-panel active">
+  Forcast Table
+&lt;div>
+    </code></pre>
 <h3>JavaScript</h3>
-        <pre><code>const button = document.querySelector("#toggle");
-const abstract = document.querySelector("#abstract");
+        <pre><code>
+const button = document.querySelector(".tab-button");
+const forcast_table = document.querySelector("#forcast_table");
 
 button.addEventListener("click", () => {
-  abstract.hidden = !abstract.hidden;
+  forcast_table.hidden = !forcast_table.hidden;
 });</code></pre>
 
       </section>
+<section id="exercise_2">
+                    <h2>Mini Exercise (5–7 min)</h2>
+                    <p>Create a button to call your fahrenheit to celsius conversion function</p>
+                    
+                    <ul>
+                        <li>Create button in HTML</li>
+                        <li>Wait for <i>DOMContentLoaded</i> event</li>
+                        <li>Add interactivity to button click event</li>
+                    </ul>
+                    When you're done, save the file and test it in your web browser.
+                </section>
+    
+      <section id="element_loop">
+    
+         <h2>Looping through DOM elements</h2>
+       <p>It may be beneficial to loop through all the elements on your webpage. 
+        This allows you to add intereactivity to multiple elements without having to write code for each one.
+       Here's how you can accomplish this:</p>
+        <pre><code>
+const buttons = document.querySelectorAll('.tab-button');
 
-    <section id="forms">
-        <h2>Forms</h2>
-        <p>Accepting user input is often handled using a form element. 
-          The following example shows how to create a simple calculator using html and javascript.</p>
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+      console.log("Button clicked");
+  });
+});
+        </code></pre>
+
+        More information on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll">querySelectorAll</a>
+      </section>
+      <section id="tabs">
+        <h2>Tabs</h2>
+        <p>Often time the web interface isn't large enough to show all the content at once. A common solution is to use tabs to show and hide different sections of content.
+          The following example shows how to show/hide different content sections using JavaScript and CSS.</p>
 <h3>HTML</h3>
+        <pre><code>
+&lt;div class="tabs">
+  &lt;button class="tab-button active" data-tab="forcast_table">
+    Table
+  &lt;/button>
+  &lt;button class="tab-button" data-tab="forcast_chart">
+    Chart
+  &lt;/button>
+&lt;/div>
+
+&lt;div class="tab-content">
+  &lt;div id="forcast_table" class="tab-panel active">
+    Forcast Table
+  &lt;/div>
+  &lt;div id="forcast_chart" class="tab-panel">
+    Forcast Chart
+  &lt;/div>
+&lt;/div>
+    </code></pre>
+<h3>CSS</h3>
 <pre><code id="code-container0"></code></pre>
         <script>
             // The raw HTML code you want to display
             var  rawHTML = `
-<form onsubmit="calculate(event)">
-  <label for="equation">Enter an equation:</label><br>
-  <input type="text" id="equation" placeholder="e.g. 2 + 3 * 4">
-  <button type="submit">Calculate</button>
-</form>
+.tabs {
+  margin-bottom: 1rem;
+}
 
-  <p><strong>Result:</strong> <span id="result"></span></p>
+.tab-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #e5e7eb;
+  cursor: pointer;
+  margin-right: 0.25rem;
+}
+
+.tab-button.active {
+  background: #2563eb;
+  color: white;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
   `;
 
             // Set the textContent property to display the code as text
@@ -471,44 +537,32 @@ button.addEventListener("click", () => {
         </script>
 <h3>JavaScript</h3>
         <pre><code>
-function calculate(event) {
-      event.preventDefault(); // stop form from refreshing page
+const buttons = document.querySelectorAll('.tab-button');
+const panels = document.querySelectorAll('.tab-panel');
 
-      const equation = document.getElementById("equation").value;
-      const resultEl = document.getElementById("result");
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    const target = button.dataset.tab;
 
-      // Note: eval() is dangerous in real apps.
-      // Expressions should be sanitized before processing to prevent injecting Javascript.
-      try {
-        const answer = eval(equation);
-        resultEl.textContent = answer;
-      } catch (error) {
-        resultEl.textContent = "Invalid expression";
-      }
-    }</code></pre>
+    // Update button states
+    buttons.forEach(b => b.classList.remove('active'));
+    button.classList.add('active');
+
+    // Update panel visibility
+    panels.forEach(panel => {
+      panel.classList.toggle(
+        'active',
+        panel.id === target
+      );
+    });
+  });
+});</code></pre>
 
       </section>
 
-      <section id="element_loop">
-    
-         <h2>Looping through DOM elements</h2>
-       <p>It may be beneficial to loop through all the elements on your webpage. 
-       Here's how you can accomplish this:</p>
-        <pre><code>
-            const buttons = document.querySelectorAll("button");
-
-            buttons.forEach(button => {
-            button.addEventListener("click", () => {
-                console.log("Button clicked");
-            });
-});
-        </code></pre>
-
-        More information on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll">querySelectorAll</a>
-      </section>
-
-      <footer>
-          <a href="apis_and_structured_data.html">Next Section</a>  
+      <footer>Homework: From <a href="https://colostate-my.sharepoint.com/:w:/g/personal/kaworth_colostate_edu/IQD-Ek8LDhBqTZWcCkIuDPPCAaYqu3OVDHnDz9MgD64tVCk?e=0RdwIt">Getting Started With Web Design</a> 
+                    and complete part: 2) Organize Your Content.
+          <br><a href="apis_and_structured_data.html">Next Section</a>  
       </footer>
     </main>
   </div>

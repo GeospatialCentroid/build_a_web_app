@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style/style.css">
+    <script src="js/index.js"></script>
+</head>
+<body>
+    <header>
+    <h1></h1>
+    <p></p>
+</header>
+
+<main class="layout">
+    <section id="map-container">
+    <h2></h2>
+    <div id="map"></div>
+    </section>
+
+    <section id="chart-container">
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="forcast_table">
+                Table
+            </button>
+            <button class="tab-button" data-tab="forcast_chart">
+                Chart
+            </button>
+            </div>
+
+            <div class="tab-content">
+            <div id="forcast_table" class="tab-panel active">
+                <table id="forecast">
+                    <thead>
+                        <tr>
+                        <th>Period</th>
+                        <th>Temperature</th>
+                        <th>Forecast</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    </table>
+            </div>
+            <div id="forcast_chart" class="tab-panel">
+                Forcast Chart
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

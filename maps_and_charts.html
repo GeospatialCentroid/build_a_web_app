@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Charts and Maps</title>
+  <link rel="stylesheet" href="style/style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2>Workshop</h2>
+      <nav>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+           <li><a href="#chart">TimeSeries Plots</a></li>
+          <li><a href="#leaflet">Leaflet Map</a></li>
+          <li><a href="#exercise_1">Mini Exercise</a></li>
+           <li><a href="#web_service">Web Services</a></li>
+         
+          <li><a href="#fetch">Fetching Forecast Data</a></li>
+          <li><a href="#cluster">Customizing the Map Clusters</a></li>
+           <li><a href="#gredient_markers">Gradient Markers</a></li>
+            <li><a href="#next">Next Steps</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header>
+        <h1>Web Charts and Maps</h1>
+        <p class="subtitle">Visualize data with interactive charts and maps to communicate spatial and temporal patterns.</p>
+      </header>
+
+      <section id="overview">
+        <h2>Overview</h2>
+        <p>This workshop covers:</p>
+        <ul>  
+          <li>Plotting time-series charts with chart.js</li>
+          <li>Embedding web maps with Leaflet</li>
+        
+          <li>Using NOAA web services for spatial and forecast data</li>
+        </ul>
+      </section>
+       <section id="chart">
+        <h2>TimeSeries Plots</h2>
+        <p>To show the forcasted temperature over time, lets plot it with the chart.js plugin.</p>
+        <p>First, include chart.js (and the date adapter) in your HTML (before the index.js):</p>
+
+             <pre><code id="code-container2"></code></pre>
+              <script>
+            // The raw HTML code you want to display
+            var  rawHTML = `
+<script src="https://cdn.jsdelivr.net/npm/chart.js">< /script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns">< /script>
+  `;
+
+            // Set the textContent property to display the code as text
+            document.getElementById('code-container2').textContent = rawHTML;
+        </script>
+        <p>You'll also need a canvas element in your HTML to hold the chart:</p>
+                     <pre><code id="code-container3"></code></pre>
+              <script>
+            // The raw HTML code you want to display
+            var  rawHTML = `
+<canvas id="chart"></canvas>
+  `;
+
+            // Set the textContent property to display the code as text
+            document.getElementById('code-container3').textContent = rawHTML;
+        </script>
+        <p>Now you can use the JavaScript below to draw a line chart for the high and low forcasted values over time. 
+          </p>
+        <pre><code>
+let chart;
+function drawChart(rawData) {
+
+
+  const labels = rawData.map(d => new Date(d.startTime));
+
+  const highs = rawData.map(d => d.isDaytime ? d.temperature : null);
+  const lows  = rawData.map(d => !d.isDaytime ? d.temperature : null);
+ if (chart) {
+        chart.destroy();
+    }
+  chart = new Chart(document.getElementById("chart"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        { label: "Highs", data: highs, borderColor: "firebrick",spanGaps: true },
+        { label: "Lows",  data: lows,  borderColor: "steelblue",spanGaps: true }
+      ]
+    },
+    options: {
+      scales: {
+        x: {
+          type: "time",
+          time: { unit: "day" }
+        }
+      }
+    }
+  })
+}
+
+        </code></pre>
+
+        <p>In order for chart to be drawn, you must call the drawChart function with the forecast data. 
+          Let's modify the <i>update_forcast</i> function from the <a href="apis_and_structured_data.html:#fetch">previous lesson</a>
+        by adding the following function call at the end:</p>
+        </p>
+        <pre><code>
+drawChart(_forecastData.properties.periods);
+        </code></pre>
+        <p>You should now see a chart of the forecasted temperatures over time when the page is loaded.</p>
+      </section>
+
+      <section id="leaflet">
+        <h2>Interactive web maps</h2>
+        <p>There are many popular web map plugins, and Leaflet ranks among them. 
+          This lightweight open-source JavaScript library is relatively easy to work with
+          and there are lots of <a href="https://leafletjs.com/plugins.html">Leaflet plugins</a> available to extend its functionality.</p>
+        <p>To add Leaflet to your webpage start with loadings both its CSS and JS files (before the index.js):</p>
+      
+        <pre><code id="code-container0"></code></pre>
+        <script>
+            // The raw HTML code you want to display
+            var  rawHTML = `
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin="">< /script>
+  `;
+
+            // Set the textContent property to display the code as text
+            document.getElementById('code-container0').textContent = rawHTML;
+        </script>
+<p>Next, initialize the map in your JavaScript code with the following:
+  Note: You'll need to ensure the DOM is fully loaded before initializing the map; the'DOMContentLoaded' event will help.</p>
+</p>
+<pre><code>
+// leaflet-map.js
+const map = L.map('map').setView([39.5, -98.35], 4); // centered on US
+</code></pre>
+Be sure to also set the map height in your CSS, otherwise it won't be visible:
+<pre><code>
+#map {
+    height: 400px;
+}
+</code></pre>
+
+             <p>In testing the above you'll notice the map is grey. To fix this, add the following code:</p>
+        <pre><code>
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+</code></pre>
+<p>See <a href="https://leafletjs.com/examples/quick-start/">Leaflet Quick Start Guide</a> for reference.</p>
+   
+        </section>
+          <section id="exercise_1">
+                    <h2>Mini Exercise (3–5 min)</h2>
+                    <p>Choose a different base map</p>
+                   
+                    <ul>
+                        <li>Navigate to <a href="https://leaflet-extras.github.io/leaflet-providers/preview/">https://leaflet-extras.github.io/leaflet-providers/preview/</i></li>
+                        <li>Choose a different base map provider</li>
+                        <li>Update the <i>tileLayer</i> in your JavaScript code to use the new provider</li>
+                    </ul>
+                </section>
+        
+      
+        <section id ="web_service">
+            <h2>Adding Web Services to the Map</h2>
+        <p>The last lesson we were able to drill into the <a href="https://www.arcgis.com/home/item.html?id=cb1886ff0a9d4156ba4d2fadd7e8a139">Current Weather and Wind Station Data</a>
+          from the <a href="https://livingatlas.arcgis.com/en/browse/">ArcGIS Living Atlas of the World</a>, 
+          to reveal the REST Endpoint for the Stations feature service layer</p>
+           <pre><code >https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/NOAA_METAR_current_wind_speed_direction_v1/FeatureServer/0/query?where=1=1&outFields=*&f=geojson
+</code></pre>
+        <p>The code below shows how to load the Current Weather and Wind Station Data to our map.</p>
+         
+         <i>Note: these file must be loaded before the map initialization code.</i>
+                <pre><code id="code-container1"></code></pre>
+
+        <script>
+            // The raw HTML code you want to display
+            var  rawHTML = `
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"/>
+<!-- As there are many points, we will use the Leaflet MarkerCluster plugin to group them.   -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js">< /script>
+  `;
+
+            // Set the textContent property to display the code as text
+            document.getElementById('code-container1').textContent = rawHTML;
+        </script>
+        ️<p>Now we can add the following code to load and display the data:</p>
+        <i>Note: The code should be placed after the map is initialized.</i>
+        
+        <pre><code >
+// create a clusterGroup to hold the markers          
+const clusterGroup = L.markerClusterGroup();
+fetch('https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/NOAA_METAR_current_wind_speed_direction_v1/FeatureServer/0/query?where=1=1&outFields=*&f=geojson')
+  .then(res => res.json())
+  .then(data => {
+    data.features.forEach(f => {
+      const p = f.properties;
+     try{
+      
+      const lat = f.geometry.coordinates[1];
+      const lng = f.geometry.coordinates[0];
+
+      const marker = L.marker([lat, lng], {
+        //icon: windIcon(p.WIND_SPEED, p.WIND_DIRECT)
+        icon: temperatureIcon(p.TEMP)
+      });
+        // retain the original data on the marker for later use
+        marker.properties = p
+       marker.bindPopup(`
+       Station:${p.STATION_NAME || "METAR Station"}&lt;br/>
+       State, Country:${p.COUNTRY}&lt;br/>
+        Wind: ${p.WIND_SPEED} kt @ ${p.WIND_DIRECT}°&lt;br/>
+        TEMP: ${p.TEMP}&lt;br/>
+         &lt;a href="#"  onclick="get_weather_forcast(${p.LATITUDE}, ${p.LONGITUDE}).then(data => update_forcast(data)); return false;">Show Forecast &lt;/a>
+      `);
+
+      clusterGroup.addLayer(marker);
+
+
+     }catch(err){       console.log("skip",err)
+     }
+      
+    });
+
+    map.addLayer(clusterGroup);
+  });
+
+
+  function temperatureIcon(tempC) {
+  const size =
+    tempC < 0 ? 18 :
+    tempC < 10 ? 20 :
+    tempC < 25 ? 24 :
+                 28;
+
+  return L.divIcon({
+    className: "temp-icon",
+    iconSize: [size, size],
+    html: `
+       &lt;div class="temp-marker"
+           style="background:${tempColor(tempC)}">
+        ${Math.round(tempC)}°
+       &lt;/div>
+    `
+  });
+}
+function tempColor(_temp) {
+  let temp=fToC(_temp)
+  return temp <= -10 ? "#313695" :
+         temp <= 0   ? "#4575b4" :
+         temp <= 10  ? "#74add1" :
+         temp <= 20  ? "#fdae61" :
+         temp <= 30  ? "#f46d43" :
+                       "#a50026";
+}
+function fToC(f) {
+  return ((f - 32) * 5) / 9;
+}
+        </code></pre>
+<p>The following CSS should also be added to the style.css file:</p>
+<pre><code >
+.temp-marker {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</code></pre>
+      </section>
+
+      <section id="map_legend">
+        <h2>Adding a Legend to the Map</h2>
+        <p>The following code demonstrates how to add a legend to the map:</p>
+        <pre><code>
+const tempLegend = L.control({ position: "bottomright" });
+
+tempLegend.onAdd = function () {
+  const div = L.DomUtil.create("div", "temp-legend");
+
+  div.innerHTML = `
+    &lt;div class="legend-title">Air Temperature (°F)&lt;/div>
+    &lt;div class="legend-gradient">&lt;/div>
+    &lt;div class="legend-labels">
+      &lt;span>14&lt;/span>
+      &lt;span>32&lt;/span>
+      &lt;span>50&lt;/span>
+      &lt;span>68&lt;/span>
+      &lt;span>86&lt;/span>
+      &lt;span>104+&lt;/span>
+    &lt;/div>
+  `;
+
+  return div;
+};
+
+tempLegend.addTo(map);
+
+        </code></pre>
+        <p>And add the following CSS rules to the style.css file:</p>
+        <pre><code>
+.temp-legend {
+  background: white;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 6px;
+  width: 180px;
+}
+
+.legend-title {
+  font-weight: bold;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.legend-gradient {
+  height: 14px;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    #313695,
+    #4575b4,
+    #74add1,
+    #fdae61,
+    #f46d43,
+    #a50026
+  );
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.legend-labels {
+  display: flex;
+  justify-content: space-between;
+}
+        </code></pre>
+      </section>
+
+     <section id="cluster">
+        <h2>Customizing the Map Cluster</h2>
+        <p>The default cluster styling can be customized by modifying the clusterGroups <i>iconCreateFunction</i> and updating the associated CSS class. 
+          </p>
+          <p>Replace <i> const clusterGroup = L.markerClusterGroup();</i> from the earlier code with:</p>
+          <pre><code>
+
+const clusterGroup = L.markerClusterGroup({
+  maxClusterRadius: 40,
+  iconCreateFunction: function (cluster) {
+    
+    const markers = cluster.getAllChildMarkers();
+    let sumTemp = 0;
+
+    markers.forEach(m => {
+      sumTemp += m.properties.TEMP;
+    });
+
+    const avgTemp = sumTemp / markers.length;
+
+    return temperatureClusterIcon(avgTemp, markers.length);
+  }
+});
+
+function temperatureClusterIcon(avgTemp, count) {
+  const size =
+    count < 10 ? 35 :
+    count < 50 ? 45 :
+                 55;
+
+  return L.divIcon({
+    className: "temp-cluster",
+    iconSize: [size, size],
+    html: `
+      &lt;div class="temp-cluster-wrapper"
+           style="background:${tempColor(avgTemp)}">
+        &lt;div class="temp-cluster-value">
+          ${Math.round(avgTemp)}°
+        &lt;/div>
+        &lt;div class="temp-cluster-count">
+          ${count}
+        &lt;/div>
+      &lt;/div>
+    `
+  });
+}
+        </code></pre>
+
+<p>And add the following CSS rules to the style.css file:</p>
+        <pre><code>
+.temp-cluster-wrapper {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  position: relative;
+}
+
+.temp-cluster-value {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.temp-cluster-count {
+  font-size: 10px;
+  opacity: 0.85;
+}
+.temp-marker,
+.temp-cluster-wrapper {
+  border: 1px solid rgba(255,255,255,0.6);
+}
+        </code></pre>
+      </section>
+
+      <section id="gredient_markers">
+        <h2>Gradient Markers</h2>
+        <p>To make the markers display a gradient color based on temperature, add the following JavaScript:</p>
+        <pre><code>
+const TEMP_COLOR_STOPS = [
+  { t: -10, color: "#313695" },
+  { t:   0, color: "#4575b4" },
+  { t:  10, color: "#74add1" },
+  { t:  20, color: "#fdae61" },
+  { t:  30, color: "#f46d43" },
+  { t:  40, color: "#a50026" }
+];
+
+function tempColor(_temp) {
+
+  let temp=fToC(_temp)
+  // clamp
+  if (temp <= TEMP_COLOR_STOPS[0].t) {
+    return TEMP_COLOR_STOPS[0].color;
+  }
+  if (temp >= TEMP_COLOR_STOPS[TEMP_COLOR_STOPS.length - 1].t) {
+    return TEMP_COLOR_STOPS[TEMP_COLOR_STOPS.length - 1].color;
+  }
+
+  // find surrounding stops
+  for (let i = 0; i < TEMP_COLOR_STOPS.length - 1; i++) {
+    const a = TEMP_COLOR_STOPS[i];
+    const b = TEMP_COLOR_STOPS[i + 1];
+
+    if (temp >= a.t && temp <= b.t) {
+      const t = (temp - a.t) / (b.t - a.t);
+
+      const c1 = hexToRgb(a.color);
+      const c2 = hexToRgb(b.color);
+
+      return rgbToHex({
+        r: lerp(c1.r, c2.r, t),
+        g: lerp(c1.g, c2.g, t),
+        b: lerp(c1.b, c2.b, t)
+      });
+    }
+  }
+}
+
+function hexToRgb(hex) {
+  const v = hex.replace("#", "");
+  return {
+    r: parseInt(v.substring(0, 2), 16),
+    g: parseInt(v.substring(2, 4), 16),
+    b: parseInt(v.substring(4, 6), 16)
+  };
+}
+
+function rgbToHex({ r, g, b }) {
+  return (
+    "#" +
+    [r, g, b]
+      .map(v => Math.round(v).toString(16).padStart(2, "0"))
+      .join("")
+  );
+}
+
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+        </code></pre>
+      </section>
+  <section id="next">
+      <h2>Next Steps</h2>
+      <p>We hope this tutorial has helped you understand how to build interactive web applications using HTML, CSS, and JavaScript. 
+        <br/> You can now build upon this foundation to create more complex and feature-rich web applications.</p>
+    </section>
+    <footer>
+        Homework: From <a href="https://colostate-my.sharepoint.com/:w:/g/personal/kaworth_colostate_edu/IQD-Ek8LDhBqTZWcCkIuDPPCAaYqu3OVDHnDz9MgD64tVCk?e=0RdwIt">Getting Started With Web Design</a> 
+                    and complete part: 5) Think in Sections, Not Pages and 6) Only Now: Start Coding.
+      </footer>
+    </main>
+  </div>
+
+
+</body>
+</html>

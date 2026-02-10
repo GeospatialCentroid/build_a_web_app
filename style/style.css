@@ -71,7 +71,7 @@ h2 {
 pre {
   background-color: #f1f5f9;
   padding: 1rem;
-  overflow-x: auto;
+  width: 800px;
 }
 
 code {
@@ -82,4 +82,12 @@ footer {
   margin-top: 4rem;
   font-size: 0.9rem;
   color: #475569;
+}
+
+code {
+   /* Or a specific fixed width */
+  overflow-x: auto; /* Adds scrollbar only when needed horizontally */
+  /* This ensures the content maintains its pre-formatted spacing and doesn't wrap */
+  white-space: pre;
+  display: block; /* Ensure it behaves as a block element within the container */
 }
