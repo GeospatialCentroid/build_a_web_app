@@ -91,3 +91,120 @@ code {
   white-space: pre;
   display: block; /* Ensure it behaves as a block element within the container */
 }
+
+.main-nav {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+
+.nav-brand a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #111827;
+}
+
+/* ===============================
+   DESKTOP NAV
+================================ */
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-weight: 500;
+  color: #374151;
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.nav-links a:hover {
+  color: #111827;
+}
+
+/* underline animation */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0%;
+  height: 2px;
+  background: #2563eb;
+  transition: width 0.25s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+}
+
+.nav-links a.active {
+  color: #2563eb;
+}
+
+/* ===============================
+   HAMBURGER BUTTON
+================================ */
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-toggle .bar {
+  width: 24px;
+  height: 2px;
+  background: #111827;
+  transition: 0.3s;
+}
+
+/* ===============================
+   MOBILE STYLES
+================================ */
+
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    background: #ffffff;
+    flex-direction: column;
+    width: 100%;
+    padding: 1.5rem;
+    gap: 1.25rem;
+    display: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+}
