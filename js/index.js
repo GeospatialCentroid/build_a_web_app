@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+  enhanceExternalLinks();
+  // create navigation
   fetch('nav.html')
     .then(response => response.text())
     .then(html => {
@@ -24,4 +27,30 @@ document.addEventListener('DOMContentLoaded', () => {
             .classList.toggle('open');
         });
     });
+    
   });
+
+  function enhanceExternalLinks() {
+  const links = document.querySelectorAll("a[href^='http']");
+
+  links.forEach(link => {
+    const url = new URL(link.href);
+
+    if (url.hostname !== window.location.hostname) {
+
+      // Open in new tab
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noopener noreferrer");
+
+      // Avoid duplicating icon if script runs twice
+      if (!link.querySelector(".external-icon")) {
+
+        const icon = document.createElement("span");
+        icon.classList.add("external-icon");
+        icon.innerHTML = "↗";  // simple unicode arrow
+
+        link.appendChild(icon);
+      }
+    }
+  });
+}
