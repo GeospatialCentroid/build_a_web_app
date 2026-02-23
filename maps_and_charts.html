@@ -20,8 +20,10 @@
          
           <li><a href="#fetch">Fetching Forecast Data</a></li>
           <li><a href="#cluster">Customizing the Map Clusters</a></li>
-           <li><a href="#gredient_markers">Gradient Markers</a></li>
-            <li><a href="#next">Next Steps</a></li>
+           <li><a href="#gradient_markers">Gradient Markers</a></li>
+           <li><a href="#final_touches">Final touches</a></li>
+            <li><a href="#exercise_2">Mini Exercise</a></li>
+           <li><a href="#next">Next Steps</a></li>
         </ul>
       </nav>
     </aside>
@@ -432,7 +434,7 @@ function temperatureClusterIcon(avgTemp, count) {
         </code></pre>
       </section>
 
-      <section id="gredient_markers">
+      <section id="gradient_markers">
         <h2>Gradient Markers</h2>
         <p>To make the markers display a gradient color based on temperature, add the following JavaScript:</p>
         <pre><code>
@@ -501,6 +503,33 @@ function lerp(a, b, t) {
 
         The complete code for this example can be seen at <a href="examples/lesson_4/">lesson 4</a>, and can be download from <a href="examples/lesson_4.zip">lesson_4.zip</a>.
     
+      </section>
+      <section id="final_touches">
+        <h2>Final Touches</h2>
+        <p>There are lots more aesthetic tweaks and fixes you could add to your web app</p>
+        <p>Below are some ideas</p>
+        <ul>
+          <li>Improve color palette. Most websites utilize colors that match their brand for consistency</li>
+          <li>Spacing of elements on a web page can help with legitibility</li>
+          <li>Labeling can help ensure information accurately presented</li>
+          <li>Testing with different browser window sizes, reveals that the map disappears in mobile view.</li>
+        </ul>
+        The following CSS fixes the last bullt:
+         <pre><code>
+          #map-container{
+              min-height: 400px;
+          }
+          </code></pre>
+        </section>
+        <section id="exercise_2">
+          <h2>Mini Exercise (5–7 min)</h2>
+          <p>Add a label below the tab buttons that updates to 
+            correspond with the weather forcast</p>
+          <ul>
+              <li>Create a new HTML element to house your label</li>
+              <li>Add JavaScript code to set the text of the new element</li>
+          </ul>
+          When you're done, save the file and test it in your web browser.
       </section>
   <section id="next">
       <h2>Next Steps</h2>
