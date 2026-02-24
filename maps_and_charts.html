@@ -62,7 +62,7 @@
             // Set the textContent property to display the code as text
             document.getElementById('code-container2').textContent = rawHTML;
         </script>
-        <p>You'll also need a canvas element in your HTML to hold the chart:</p>
+        <p>You'll also need a <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/canvas">canvas</a> element in your HTML to hold the chart:</p>
                      <pre><code id="code-container3"></code></pre>
               <script>
             // The raw HTML code you want to display
@@ -124,7 +124,7 @@ drawChart(_forecastData.properties.periods);
         <p>There are many popular web map plugins, and Leaflet ranks among them. 
           This lightweight open-source JavaScript library is relatively easy to work with
           and there are lots of <a href="https://leafletjs.com/plugins.html">Leaflet plugins</a> available to extend its functionality.</p>
-        <p>To add Leaflet to your webpage start with loadings both its CSS and JS files (before the index.js):</p>
+        <p>To add Leaflet to your webpage, start with loading both its CSS and JS files (before the index.js):</p>
       
         <pre><code id="code-container0"></code></pre>
         <script>
@@ -143,7 +143,7 @@ drawChart(_forecastData.properties.periods);
             document.getElementById('code-container0').textContent = rawHTML;
         </script>
 <p>Next, initialize the map in your JavaScript code with the following:
-  Note: You'll need to ensure the DOM is fully loaded before initializing the map; the'DOMContentLoaded' event will help.</p>
+  Note: You'll need to ensure the DOM is fully loaded before initializing the map; the 'DOMContentLoaded' event works well for this.</p>
 </p>
 <pre><code>
 // leaflet-map.js
@@ -175,6 +175,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         <li>Choose a different base map provider</li>
                         <li>Update the <i>tileLayer</i> in your JavaScript code to use the new provider</li>
                     </ul>
+                     When you're done, save the file and test it in your web browser.
                 </section>
         
       
@@ -219,11 +220,10 @@ fetch('https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/NOAA_M
       const lng = f.geometry.coordinates[0];
 
       const marker = L.marker([lat, lng], {
-        //icon: windIcon(p.WIND_SPEED, p.WIND_DIRECT)
         icon: temperatureIcon(p.TEMP)
       });
-        // retain the original data on the marker for later use
-        marker.properties = p
+      // retain the original data in the marker for later use
+       marker.properties = p
        marker.bindPopup(`
        Station:${p.STATION_NAME || "METAR Station"}&lt;br/>
        State, Country:${p.COUNTRY}&lt;br/>
@@ -245,7 +245,9 @@ fetch('https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/NOAA_M
 
 
   function temperatureIcon(tempC) {
-  const size =
+     // this is a long ternary operator (fancy if/else)
+     //read as condition ? valueIfTrue : valueIfFalse
+    const size =
     tempC < 0 ? 18 :
     tempC < 10 ? 20 :
     tempC < 25 ? 24 :
